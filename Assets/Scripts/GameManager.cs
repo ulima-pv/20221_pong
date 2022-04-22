@@ -11,9 +11,14 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
     public Text tituloUI;
     public Text mensajeUI;
+    public Text score1UI;
+    public Text score2UI;
 
     private bool mRunning = false;
     private BallMovementManager mBallMovementManager;
+
+    private int mScoreJugador1 = 0;
+    private int mScoreJugador2 = 0;
 
     private void Start()
     {
@@ -35,12 +40,34 @@ public class GameManager : MonoBehaviour
         mBallMovementManager.StartGame();
         tituloUI.gameObject.SetActive(false);
         mensajeUI.gameObject.SetActive(false);
+        score1UI.gameObject.SetActive(false);
+        score2UI.gameObject.SetActive(false);
         mRunning = true;
     }
 
     public void OnGoalScoredDelegate(object sender, EventArgs e)
     {
         Debug.Log("Goal");
+
+        // Actualizar los score
+        GoalScoredData data = e as GoalScoredData;
+        if (data.jugador == "Paddle1")
+        {
+            mScoreJugador1++;
+        }else
+        {
+            mScoreJugador2++;
+        }
+
+
+        tituloUI.text = "GOL!";
+        mensajeUI.text = "Presione Espacio para continuar...";
+        score1UI.text = mScoreJugador1.ToString();
+        score2UI.text = mScoreJugador2.ToString();
+        tituloUI.gameObject.SetActive(true);
+        mensajeUI.gameObject.SetActive(true);
+        score1UI.gameObject.SetActive(true);
+        score2UI.gameObject.SetActive(true);
         mRunning = false;
     }
 }
